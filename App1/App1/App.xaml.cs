@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 
 using Xamarin.Forms;
+using XamarinMapSample;
+
 
 namespace App1
 {
@@ -11,12 +13,14 @@ namespace App1
 	{
 		public App ()
 		{
-			InitializeComponent();
+            //InitializeComponent();
 
-			MainPage = new App1.MainPage();
-		}
+            //MainPage = new App1.MainPage();
+            MainPage = new MapPage { Title = "Map/Zoom", Icon = "glyphish_74_location.png" };
 
-		protected override void OnStart ()
+        }
+
+        protected override void OnStart ()
 		{
 			// Handle when your app starts
 		}
