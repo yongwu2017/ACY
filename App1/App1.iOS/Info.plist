@@ -48,5 +48,7 @@
 	<string>com.acy.WeaponCarry</string>
 	<key>CFBundleName</key>
 	<string>Weapon Carry</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Show your current location and alert you to nearby restrictions</string>
 </dict>
 </plist>
