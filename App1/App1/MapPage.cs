@@ -16,58 +16,51 @@ namespace XamarinMapSample
                 WidthRequest = 960,
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
-            // You can use MapSpan.FromCenterAndRadius   
+            // starting location of map   
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(33.57, -101.85), Distance.FromMiles(1000.0)));
+  
+            // Instantiates a new Polyline object and adds points to define a rectangle
+            PolylineOptions rectOptions = new PolylineOptions()
+                    .add(new LatLng(37.35, -122.0))
+                    .add(new LatLng(37.45, -122.0))  // North of the previous point, but at the same longitude
+                    .add(new LatLng(37.45, -122.2))  // Same latitude, and 30km to the west
+                    .add(new LatLng(37.35, -122.2))  // Same longitude, and 16km to the south
+                    .add(new LatLng(37.35, -122.0)); // Closes the polyline.
+            // Get back the mutable Polyline
+            Polyline polyline = map.addPolyline(rectOptions);
 
-            // add the slider  
-            //        var slider = new Slider(1, 18, 1);
-            //      slider.ValueChanged += (sender, e) => {
-            //        var zoomLevel = e.NewValue; // between 1 and 18  
-            //      var latlongdegrees = 360 / (Math.Pow(2, zoomLevel));
-            //    Debug.WriteLine(zoomLevel + " -> " + latlongdegrees);
-            //  if (map.VisibleRegion != null) map.MoveToRegion(new MapSpan(map.VisibleRegion.Center, latlongdegrees, latlongdegrees));
-            // };
-            // create map style buttons  
-            var street = new Button
+            // map terrain buttons  
+            var Street = new Button
             {
                 Text = "Street"
             };
-            var hybrid = new Button
+            var Satellite = new Button
             {
-                Text = "Hybrid"
+                Text = "Satellite"
             };
-            //  var satellite = new Button
-            //{
-            //  Text = "Satellite"
-            // };
-            street.Clicked += HandleClicked;
-            hybrid.Clicked += HandleClicked;
-            // satellite.Clicked += HandleClicked;
+
+            Street.Clicked += HandleClicked;
+            Satellite.Clicked += HandleClicked;
+
             var segments = new StackLayout
             {
                 Spacing = 30,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
                 Orientation = StackOrientation.Horizontal,
                 Children = {
-                            street,
-                            hybrid//,
-             //               satellite
+                            Street,
+                            Satellite
                         }
             };
-            // put the page together  
+            // Assemble the page  
             var stack = new StackLayout
             {
                 Spacing = 0
             };
             stack.Children.Add(map);
-            // stack.Children.Add(slider);
             stack.Children.Add(segments);
             Content = stack;
-            // for debugging output only  
-            map.PropertyChanged += (sender, e) => {
-                Debug.WriteLine(e.PropertyName + " just changed!");
-                if (e.PropertyName == "VisibleRegion" && map.VisibleRegion != null) CalculateBoundingCoordinates(map.VisibleRegion);
-            };
+
         }
         void HandleClicked(object sender, EventArgs e)
         {
@@ -77,37 +70,10 @@ namespace XamarinMapSample
                 case "Street":
                     map.MapType = MapType.Street;
                     break;
-                case "Hybrid":
+                case "Satellite":
                     map.MapType = MapType.Hybrid;
                     break;
-                    // case "Satellite":
-                    //    map.MapType = MapType.Satellite;
-                    //  break;
             }
-        }
-        /// <summary>  
-        /// In response to this forum question http://forums.xamarin.com/discussion/22493/maps-visibleregion-bounds  
-        /// Useful if you need to send the bounds to a web service or otherwise calculate what  
-        /// pins might need to be drawn inside the currently visible viewport.  
-        /// </summary>  
-        static void CalculateBoundingCoordinates(MapSpan region)
-        {
-            // WARNING: I haven't tested the correctness of this exhaustively!  
-            var center = region.Center;
-            var halfheightDegrees = region.LatitudeDegrees / 2;
-            var halfwidthDegrees = region.LongitudeDegrees / 2;
-            var left = center.Longitude - halfwidthDegrees;
-            var right = center.Longitude + halfwidthDegrees;
-            var top = center.Latitude + halfheightDegrees;
-            var bottom = center.Latitude - halfheightDegrees;
-            // Adjust for Internation Date Line (+/- 180 degrees longitude)  
-            if (left < -180) left = 180 + (180 + left);
-            if (right > 180) right = (right - 180) - 180;
-            // I don't wrap around north or south; I don't think the map control allows this anyway  
-            Debug.WriteLine("Bounding box:");
-            Debug.WriteLine(" " + top);
-            Debug.WriteLine(" " + left + " " + right);
-            Debug.WriteLine(" " + bottom);
         }
     }
 }
