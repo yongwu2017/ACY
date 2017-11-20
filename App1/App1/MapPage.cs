@@ -42,6 +42,15 @@ namespace XamarinMapSample
                             Satellite
                         }
             };
+            // create pin
+            var pin = new Pin
+            {
+                Position = new Position(30.57, -99.85),
+                Label = "Texas"
+            };
+            pin.Clicked += PinSelect;
+            map.Pins.Add(pin);
+
             // Assemble the page  
             var stack = new StackLayout
             {
@@ -49,9 +58,11 @@ namespace XamarinMapSample
             };
             stack.Children.Add(map);
             stack.Children.Add(segments);
+     //       stack.Children.Add(pin);
             Content = stack;
 
         }
+        // Terrain button clicked
         void HandleClicked(object sender, EventArgs e)
         {
             var b = sender as Button;
@@ -64,6 +75,14 @@ namespace XamarinMapSample
                     map.MapType = MapType.Hybrid;
                     break;
             }
+        }
+
+        // Pin slected
+        private void PinSelect(object send, EventArgs e)
+        {
+            var selectedPin = send as Pin;
+            DisplayAlert(selectedPin?.Label, "Gun Laws: \nGuns Blazing", "ok");
+
         }
     }
 }
