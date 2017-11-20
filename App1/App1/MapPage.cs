@@ -1,22 +1,30 @@
-﻿using System;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using System.Diagnostics;
+
 namespace XamarinMapSample
 {
     public class MapPage : ContentPage
     {
-        Map map;
+        CustomMap map;
         public MapPage()
         {
-            map = new Map
+            map = new CustomMap
             {
                 IsShowingUser = true,
                 HeightRequest = 100,
                 WidthRequest = 960,
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
-            // starting location of map   
+
+            map.ShapeCoordinates.Add(new Position(33.569, -101.849));
+            map.ShapeCoordinates.Add(new Position(33.569, -101.851));
+            map.ShapeCoordinates.Add(new Position(33.571, -101.851));
+            map.ShapeCoordinates.Add(new Position(33.571, -101.849));
+
+            // You can use MapSpan.FromCenterAndRadius   
+
             map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(33.57, -101.85), Distance.FromMiles(1000.0)));
   
             // map terrain buttons  
