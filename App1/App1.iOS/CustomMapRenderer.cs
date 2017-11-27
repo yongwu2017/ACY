@@ -18,32 +18,39 @@ namespace MapOverlay.iOS
         {
             base.OnElementChanged(e);
 
-            if (e.OldElement != null) {
+            if (e.OldElement != null)
+            {
                 var nativeMap = Control as MKMapView;
-                if (nativeMap != null) {
+                if (nativeMap != null)
+                {
                     nativeMap.RemoveOverlays(nativeMap.Overlays);
                     nativeMap.OverlayRenderer = null;
                     polygonRenderer = null;
                 }
             }
 
-            if (e.NewElement != null) {
+
+            if (e.NewElement != null)
+            {
                 var formsMap = (CustomMap)e.NewElement;
+
                 var nativeMap = Control as MKMapView;
 
-                nativeMap.OverlayRenderer = GetOverlayRenderer;
-
-                CLLocationCoordinate2D[] coords = new CLLocationCoordinate2D[formsMap.ShapeCoordinates.Count];
-
-                int index = 0;
-                foreach (var position in formsMap.ShapeCoordinates)
+                foreach (var shape in formsMap.Shapes)
                 {
-                    coords[index] = new CLLocationCoordinate2D(position.Latitude, position.Longitude);
-                    index++;
-                }
+                    nativeMap.OverlayRenderer = GetOverlayRenderer;
+                    CLLocationCoordinate2D[] coords = new CLLocationCoordinate2D[shape.Count];
 
-                var blockOverlay = MKPolygon.FromCoordinates(coords);
-                nativeMap.AddOverlay(blockOverlay);
+                    int index = 0;
+                    foreach (var position in shape)
+                    {
+                        coords[index] = new CLLocationCoordinate2D(position.Latitude, position.Longitude);
+                        index++;
+                    }
+
+                    nativeMap.AddOverlay(MKPolygon.FromCoordinates(coords));
+                    polygonRenderer = null;
+                }
             }
         }
 
@@ -57,7 +64,7 @@ namespace MapOverlay.iOS
                     FillColor = UIColor.Red,
                     StrokeColor = UIColor.Red,
                     Alpha = 0.4f,
-                    LineWidth = 9
+                    LineWidth = 1
                 };
             }
             return polygonRenderer;

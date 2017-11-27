@@ -1,6 +1,7 @@
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace XamarinMapSample
@@ -18,10 +19,23 @@ namespace XamarinMapSample
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
 
-            map.ShapeCoordinates.Add(new Position(33.569, -101.849));
-            map.ShapeCoordinates.Add(new Position(33.569, -101.851));
-            map.ShapeCoordinates.Add(new Position(33.571, -101.851));
-            map.ShapeCoordinates.Add(new Position(33.571, -101.849));
+            map.Shapes.Add(new List<Position>());
+            map.Shapes[0].Add(new Position(33.5, -101.8));
+            map.Shapes[0].Add(new Position(33.5, -101.9));
+            map.Shapes[0].Add(new Position(33.6, -101.9));
+            map.Shapes[0].Add(new Position(33.6, -101.8));
+
+            map.Shapes.Add(new List<Position>());
+            map.Shapes[1].Add(new Position(43.5, -101.8));
+            map.Shapes[1].Add(new Position(43.5, -101.9));
+            map.Shapes[1].Add(new Position(43.6, -101.9));
+            map.Shapes[1].Add(new Position(43.6, -101.8));
+
+            map.Shapes.Add(new List<Position>());
+            map.Shapes[2].Add(new Position(33.5, -111.8));
+            map.Shapes[2].Add(new Position(33.5, -111.9));
+            map.Shapes[2].Add(new Position(33.6, -111.9));
+            map.Shapes[2].Add(new Position(33.6, -111.8));
 
             // You can use MapSpan.FromCenterAndRadius   
 

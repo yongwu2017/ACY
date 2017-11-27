@@ -3,10 +3,10 @@ using Xamarin.Forms.Maps;
 
 public class CustomMap : Map
 {
-    public List<Position> ShapeCoordinates { get; set; }
+    public List<List<Position>> Shapes { get; set; }
 
     public CustomMap()
     {
-        ShapeCoordinates = new List<Position> ();
+        Shapes = new List<List<Position>>();
     }
 }
